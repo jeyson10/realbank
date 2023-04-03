@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BadRequestException, ConflictException , NotFoundException} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository,EntityNotFoundError } from 'typeorm';
 import { Cliente } from './cliente.entity';
 
 @Injectable()
@@ -35,6 +35,23 @@ export class ClienteService {
   
     // Guardar el cliente en la base de datos
     return this.clienteRepository.save(cliente);
+  }
+
+  async findOne(id: number): Promise<Cliente> {
+    try {
+      const cliente = await this.clienteRepository.findOneOrFail({
+        where: { id: id},
+      });
+      if (!cliente.estado) {
+        throw new NotFoundException('El Cliente no existe o está desactivado');
+      }
+      return cliente;
+    } catch (error) {
+      if (error instanceof EntityNotFoundError) {
+        throw new NotFoundException('El Cliente no existe o está desactivado');
+      }
+      throw error;
+    }
   }
 
   async findAll(): Promise<Cliente[]> {

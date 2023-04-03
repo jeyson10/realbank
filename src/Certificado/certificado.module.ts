@@ -6,6 +6,8 @@ import { CertificadoBancarioService } from './certificado.service';
 import { Cliente } from '../Cliente/cliente.entity';
 import { Deposito } from './Deposito/deposito.entity';
 import { DepositoService } from './Deposito/deposito.service';
+import { ClienteService } from '../Cliente/cliente.service';
+
 
 
 
@@ -15,6 +17,6 @@ import { DepositoService } from './Deposito/deposito.service';
     TypeOrmModule.forFeature([CertificadoBancario, Cliente,Deposito]),
   ],
   controllers: [CertificadoBancarioController],
-  providers: [CertificadoBancarioService,DepositoService],
+  providers: [CertificadoBancarioService,DepositoService,ClienteService],
 })
 export class CertificadoBancarioModule {}

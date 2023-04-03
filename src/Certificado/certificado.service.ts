@@ -7,12 +7,17 @@ import { Cliente } from '../Cliente/cliente.entity';
 import { DepositoService } from './Deposito/deposito.service';
 import { BadRequestException } from '@nestjs/common';
 import { CreateCertificadoDto } from './dto/create-certificado.dto';
+import { ClienteService } from 'src/Cliente/cliente.service';
+
+
+
 
 @Injectable()
 export class CertificadoBancarioService {
   constructor(
     @InjectRepository(CertificadoBancario)
     private certificadoRepository: Repository<CertificadoBancario>,
+    private clienteService: ClienteService,
     private readonly depositoService: DepositoService,
   ) {}
 
@@ -20,6 +25,14 @@ export class CertificadoBancarioService {
     // Verificar si alguno de los campos requeridos falta en el objeto 'certificadoDto'
     if (!certificadoDto.monto || !certificadoDto.meses || !certificadoDto.interes || !certificadoDto.penalizacion || !certificadoDto.fechaInicio || !certificadoDto.fechaVencimiento || certificadoDto.estado === undefined || !certificadoDto.clienteId) {
       throw new BadRequestException('Faltan campos requeridos en el objeto CertificadoBancario');
+    }
+
+    
+    const cliente = await this.clienteService.findOne(certificadoDto.clienteId);
+
+    console.log(cliente);
+    if (!cliente) {
+      throw new BadRequestException('No existe un cliente con el ID proporcionado');
     }
   
     // Crear una nueva instancia de CertificadoBancario y asignar las propiedades del DTO
@@ -179,14 +192,20 @@ export class CertificadoBancarioService {
     let balance=0;
     let montoActual = certificado.monto;
     let fechaActual = new Date(certificado.fechaInicio);
-    fechaActual.setDate(fechaActual.getDate() + 1);
+    fechaActual.setDate(fechaActual.getDate()+1);
     const interesMensual = (certificado.interes / 100 / 12);
     const fechaHoy = new Date();
 
     for (let mes = 1; mes <= certificado.meses; mes++) {
+      const diferenciaEnMilisegundos = fechaHoy.getTime() - fechaActual.getTime();
+      const diasEntreFechas = Math.floor(diferenciaEnMilisegundos / 86400000);
 
-      if(fechaActual.getMonth()<= fechaHoy.getMonth())
+ 
+     // console.log(diasEntreFechas);
+      if(diasEntreFechas>27)
       {
+
+  
       // Agregar depósitos realizados en este mes al monto actual
       depositos.forEach(deposito => {
         const fechaDeposito = new Date(deposito.fecha);
@@ -211,7 +230,12 @@ export class CertificadoBancarioService {
       });
 
       montoActual = total;
+    
     }
+    else if(mes===1){
+      balance=certificado.monto;
+    }
+
     }
 
     return parseFloat(balance.toFixed(2));

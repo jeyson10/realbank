@@ -32,7 +32,7 @@ export class CertificadoBancarioController {
 
     @ApiTags('Balance y Depositos')
     @Get('balancecliente/:clienteId')
-    @ApiOperation({ summary: 'Obtener balance de todos los certificados por ID de cliente' })
+    @ApiOperation({ summary: 'Obtener balance de todos los certificados por ID de cliente (Sumando intereses acumulados hasta el dia actual)' })
     @ApiResponse({
       status: 200,
       description: 'Balance del cliente obtenido correctamente',
@@ -45,7 +45,7 @@ export class CertificadoBancarioController {
     }
 
   @ApiTags('certificado')
-  @ApiOperation({ summary: 'Listado de ganancias por mes para un certificado' })
+  @ApiOperation({ summary: 'Listado de ganancias por mes para un certificado (Interes Reinvertido)' })
   @ApiParam({ name: 'id', description: 'ID del certificado', type: Number })
   @Get('/ganancia/:id')
   async generarTablaGanancias(@Param('id') id: number) {
@@ -53,7 +53,7 @@ export class CertificadoBancarioController {
   }
 
   @ApiTags('Balance y Depositos')
-  @ApiOperation({ summary: 'Balance para un certificado en especifico' })
+  @ApiOperation({ summary: 'Balance para un certificado en especifico (Sumando intereses acumulados hasta el dia actual)' })
   @ApiParam({ name: 'id', description: 'ID del certificado', type: Number })
   @Get('/balance/:id')
   async balancePorIdCertificado(@Param('id') id: number) {
