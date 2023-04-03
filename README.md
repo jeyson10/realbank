@@ -6,12 +6,15 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
 ## Configurar Base de Datos
 
 1. Crear Base de Datos: 
+    ```
+    CREATE DATABASE realbank;
 
-  CREATE DATABASE realbank;
+    ```
 
 2. Crear la tabla certificado_bancario: 
 
     ```
+
       CREATE TABLE IF NOT EXISTS public.certificado_bancario
       (
           id integer NOT NULL DEFAULT 'nextval('certificado_bancario_id_seq'::regclass)',
@@ -37,40 +40,44 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
 
 3. Crear la tabla cliente: 
 
-  CREATE TABLE IF NOT EXISTS public.cliente
-  (
-      id integer NOT NULL DEFAULT 'nextval('cliente_id_seq'::regclass)',
-      nombre character varying COLLATE pg_catalog."default" NOT NULL,
-      apellido character varying COLLATE pg_catalog."default" NOT NULL,
-      correo character varying COLLATE pg_catalog."default" NOT NULL,
-      identificacion character varying COLLATE pg_catalog."default" NOT NULL,
-      telefono character varying COLLATE pg_catalog."default" NOT NULL,
-      estado boolean NOT NULL DEFAULT 'true',
-      CONSTRAINT "PK_18990e8df6cf7fe71b9dc0f5f39" PRIMARY KEY (id)
-  )
+    ```
 
-  TABLESPACE pg_default;
+      CREATE TABLE IF NOT EXISTS public.cliente
+      (
+          id integer NOT NULL DEFAULT 'nextval('cliente_id_seq'::regclass)',
+          nombre character varying COLLATE pg_catalog."default" NOT NULL,
+          apellido character varying COLLATE pg_catalog."default" NOT NULL,
+          correo character varying COLLATE pg_catalog."default" NOT NULL,
+          identificacion character varying COLLATE pg_catalog."default" NOT NULL,
+          telefono character varying COLLATE pg_catalog."default" NOT NULL,
+          estado boolean NOT NULL DEFAULT 'true',
+          CONSTRAINT "PK_18990e8df6cf7fe71b9dc0f5f39" PRIMARY KEY (id)
+      )
+    
 
-  ALTER TABLE IF EXISTS public.cliente
+    ALTER TABLE IF EXISTS public.cliente
+
+    ```
 
 4. Crear la tabla deposito: 
+    ```
 
-  CREATE TABLE IF NOT EXISTS public.deposito
-  (
-      id integer NOT NULL DEFAULT 'nextval('deposito_id_seq'::regclass)',
-      monto double precision NOT NULL,
-      fecha date NOT NULL,
-      "certificadoId" integer NOT NULL,
-      CONSTRAINT "PK_6b3dfe64ef12ee03ff8cab435f3" PRIMARY KEY (id),
-      CONSTRAINT "FK_60a21637ca7497825ff9f3e7659" FOREIGN KEY ("certificadoId")
-          REFERENCES public.certificado_bancario (id) MATCH SIMPLE
-          ON UPDATE NO ACTION
-          ON DELETE NO ACTION
-  )
+      CREATE TABLE IF NOT EXISTS public.deposito
+      (
+          id integer NOT NULL DEFAULT 'nextval('deposito_id_seq'::regclass)',
+          monto double precision NOT NULL,
+          fecha date NOT NULL,
+          "certificadoId" integer NOT NULL,
+          CONSTRAINT "PK_6b3dfe64ef12ee03ff8cab435f3" PRIMARY KEY (id),
+          CONSTRAINT "FK_60a21637ca7497825ff9f3e7659" FOREIGN KEY ("certificadoId")
+              REFERENCES public.certificado_bancario (id) MATCH SIMPLE
+              ON UPDATE NO ACTION
+              ON DELETE NO ACTION
+      )
 
   ALTER TABLE IF EXISTS public.deposito
 
-
+    ```
 ## Instalación
 Para instalar esta API, siga estos pasos:
 1. Clonar el repositorio.
