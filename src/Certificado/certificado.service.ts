@@ -44,9 +44,17 @@ export class CertificadoBancarioService {
   }
 
   async findOne(certificadoId: number): Promise<CertificadoBancario> {
-    return this.certificadoRepository.findOneOrFail({
+
+    const certificado = this.certificadoRepository.findOneOrFail({
       where: { id: certificadoId},
     });
+
+    if(!certificado || (await certificado).estado === false)
+    {
+      throw new BadRequestException('El certificado no existe o esta cerrado');
+    }
+
+    return  certificado;
   }
 
 
@@ -117,11 +125,13 @@ export class CertificadoBancarioService {
     }
 
    
+   
 
     const depositos = await this.depositoService.obtenerDepositosPorCertificado(id);
     const tablaGanancias = [];
     let montoActual = certificado.monto;
     let fechaActual = new Date(certificado.fechaInicio);
+    fechaActual.setDate(fechaActual.getDate() + 1);
     const interesMensual = Math.pow(1 + certificado.interes / 100, 1 / 12) - 1;
 
     for (let mes = 1; mes <= certificado.meses; mes++) {
@@ -139,7 +149,7 @@ export class CertificadoBancarioService {
       
       const nextMonth = fechaActual.getMonth() + 1;
       const nextYear = fechaActual.getFullYear() + Math.floor(nextMonth / 12);
-      fechaActual.setFullYear(nextYear, nextMonth % 12, 1);
+      fechaActual.setFullYear(nextYear, nextMonth % 12);
 
       tablaGanancias.push({
         mes,
@@ -163,11 +173,13 @@ export class CertificadoBancarioService {
       throw new BadRequestException('Certificado no encontrado');
     }
 
+ 
     const depositos = await this.depositoService.obtenerDepositosPorCertificado(id);
     const tablaGanancias = [];
     let balance=0;
     let montoActual = certificado.monto;
     let fechaActual = new Date(certificado.fechaInicio);
+    fechaActual.setDate(fechaActual.getDate() + 1);
     const interesMensual = Math.pow(1 + certificado.interes / 100, 1 / 12) - 1;
     const fechaHoy = new Date();
 
@@ -189,7 +201,7 @@ export class CertificadoBancarioService {
       balance = montoActual + intereses;
       const nextMonth = fechaActual.getMonth() + 1;
       const nextYear = fechaActual.getFullYear() + Math.floor(nextMonth / 12);
-      fechaActual.setFullYear(nextYear, nextMonth % 12, 1);
+      fechaActual.setFullYear(nextYear, nextMonth % 12);
 
       tablaGanancias.push({
         mes,

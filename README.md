@@ -3,7 +3,7 @@
 ## Descripción
 Esta es una API creada con NestJS para la Gestion de Certificados bancarios de la empresa RealBank.
 
-## Configurar Base de Datos
+## Configurar Base de Datos (PostgreSQL)
 
 1. Crear Base de Datos: 
     ```
@@ -75,9 +75,23 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
               ON DELETE NO ACTION
       )
 
-  ALTER TABLE IF EXISTS public.deposito
+      ALTER TABLE IF EXISTS public.deposito
 
     ```
+## Importar Datos de Prueba
+
+    ```
+        INSERT INTO public.cliente VALUES (5, 'Jeyson', 'Diez', 'jeyson.diez@gmail.com', '40224884854', '8094135269', true);
+        INSERT INTO public.cliente VALUES (7, 'Pedro', 'Hernandez', 'pedro@gmail.com', '40224881112', '8094135220', true);
+        INSERT INTO public.cliente VALUES (6, 'Hansel', 'Vargas', 'vargasgmail.com', '40224884586', '8094555258', true);
+
+        INSERT INTO public.certificado_bancario VALUES (11, 50000, 9, 5, 10, '2024-01-03', true, 7, '2023-04-03');
+        INSERT INTO public.certificado_bancario VALUES (13, 100000, 10, 6, 10, '2024-02-03', true, 6, '2023-04-10');
+        INSERT INTO public.certificado_bancario VALUES (10, 10000, 12, 15, 10, '2024-04-03', false, 5, '2023-04-03');
+        INSERT INTO public.certificado_bancario VALUES (14, 25000, 10, 5, 10, '2024-04-04', true, 5, '2023-01-20');
+
+    ```
+
 ## Instalación
 Para instalar esta API, siga estos pasos:
 1. Clonar el repositorio.

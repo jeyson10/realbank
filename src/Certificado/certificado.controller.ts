@@ -20,13 +20,6 @@ export class CertificadoBancarioController {
     return this.certificadoService.create(createCertificadoDto);
   }
 
-  // @Get('ganancias/:certificadoId')
-  // async getGanancia(@Param('certificadoId') certificadoId: number):Promise<number[]> {
-  //   const certificado = await this.certificadoService.findOne(certificadoId);
-  //   const ganancia = await this.certificadoService.calcularGananciaPorMes(certificado.monto, certificado.interes, certificado.meses);
-  //   return ganancia;
-  //   }
-  
 
     @ApiTags('certificado')
     @Get('list')

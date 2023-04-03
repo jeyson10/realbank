@@ -28,11 +28,14 @@ export class DepositoService {
         throw new BadRequestException('Falta el campo \'certificadoId\'');
       }
 
+
       const certificado = await this.certificadoRepository.findOne({where: {id: deposito.certificadoId}});
       if (!certificado) {
         throw new NotFoundException(`El certificado con ID '${deposito.certificadoId}' no existe`);
       }
-    
+      if (certificado.estado === false) {
+        throw new NotFoundException(`El certificado con ID '${deposito.certificadoId}' Ya esta Cerrado`);
+      }
     const nuevoDeposito = this.depositoRepository.create(deposito);
     return this.depositoRepository.save(nuevoDeposito);
   }
