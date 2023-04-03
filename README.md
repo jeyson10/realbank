@@ -11,6 +11,8 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
 
 2. Crear la tabla certificado_bancario: 
 
+## certificado_bancario: 
+
   CREATE TABLE IF NOT EXISTS public.certificado_bancario
   (
       id integer NOT NULL DEFAULT 'nextval('certificado_bancario_id_seq'::regclass)',
@@ -28,6 +30,7 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
           ON UPDATE NO ACTION
           ON DELETE NO ACTION
   )
+
 
   ALTER TABLE IF EXISTS public.certificado_bancario
 
