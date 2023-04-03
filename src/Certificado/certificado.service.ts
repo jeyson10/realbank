@@ -132,7 +132,7 @@ export class CertificadoBancarioService {
     let montoActual = certificado.monto;
     let fechaActual = new Date(certificado.fechaInicio);
     fechaActual.setDate(fechaActual.getDate() + 1);
-    const interesMensual = Math.pow(1 + certificado.interes / 100, 1 / 12) - 1;
+    const interesMensual = (certificado.interes / 100 / 12);
 
     for (let mes = 1; mes <= certificado.meses; mes++) {
       // Agregar depósitos realizados en este mes al monto actual
@@ -180,7 +180,7 @@ export class CertificadoBancarioService {
     let montoActual = certificado.monto;
     let fechaActual = new Date(certificado.fechaInicio);
     fechaActual.setDate(fechaActual.getDate() + 1);
-    const interesMensual = Math.pow(1 + certificado.interes / 100, 1 / 12) - 1;
+    const interesMensual = (certificado.interes / 100 / 12);
     const fechaHoy = new Date();
 
     for (let mes = 1; mes <= certificado.meses; mes++) {
