@@ -1,73 +1,96 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# RealBank API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Descripción
+Esta es una API creada con NestJS para la Gestion de Certificados bancarios de la empresa RealBank.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Configurar Base de Datos
 
-## Description 2
+1. Crear Base de Datos: 
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+  CREATE DATABASE realbank;
 
-## Installation
+2. Crear la tabla certificado_bancario: 
 
-```bash
-$ npm install
-```
+  CREATE TABLE IF NOT EXISTS public.certificado_bancario
+  (
+      id integer NOT NULL DEFAULT 'nextval('certificado_bancario_id_seq'::regclass)',
+      monto double precision NOT NULL,
+      meses integer NOT NULL,
+      interes double precision NOT NULL,
+      penalizacion double precision NOT NULL,
+      "fechaVencimiento" date NOT NULL,
+      estado boolean NOT NULL DEFAULT 'true',
+      "clienteId" integer NOT NULL,
+      "fechaInicio" date NOT NULL,
+      CONSTRAINT "PK_469a4537492b266f0b5a73bf90d" PRIMARY KEY (id),
+      CONSTRAINT "FK_4f6bac4a37235fc073e98ad469a" FOREIGN KEY ("clienteId")
+          REFERENCES public.cliente (id) MATCH SIMPLE
+          ON UPDATE NO ACTION
+          ON DELETE NO ACTION
+  )
 
-## Running the app
+  ALTER TABLE IF EXISTS public.certificado_bancario
 
-```bash
-# development
-$ npm run start
+3. Crear la tabla cliente: 
 
-# watch mode
-$ npm run start:dev
+  CREATE TABLE IF NOT EXISTS public.cliente
+  (
+      id integer NOT NULL DEFAULT 'nextval('cliente_id_seq'::regclass)',
+      nombre character varying COLLATE pg_catalog."default" NOT NULL,
+      apellido character varying COLLATE pg_catalog."default" NOT NULL,
+      correo character varying COLLATE pg_catalog."default" NOT NULL,
+      identificacion character varying COLLATE pg_catalog."default" NOT NULL,
+      telefono character varying COLLATE pg_catalog."default" NOT NULL,
+      estado boolean NOT NULL DEFAULT 'true',
+      CONSTRAINT "PK_18990e8df6cf7fe71b9dc0f5f39" PRIMARY KEY (id)
+  )
 
-# production mode
-$ npm run start:prod
-```
+  TABLESPACE pg_default;
 
-## Test
+  ALTER TABLE IF EXISTS public.cliente
 
-```bash
-# unit tests
-$ npm run test
+4. Crear la tabla deposito: 
 
-# e2e tests
-$ npm run test:e2e
+  CREATE TABLE IF NOT EXISTS public.deposito
+  (
+      id integer NOT NULL DEFAULT 'nextval('deposito_id_seq'::regclass)',
+      monto double precision NOT NULL,
+      fecha date NOT NULL,
+      "certificadoId" integer NOT NULL,
+      CONSTRAINT "PK_6b3dfe64ef12ee03ff8cab435f3" PRIMARY KEY (id),
+      CONSTRAINT "FK_60a21637ca7497825ff9f3e7659" FOREIGN KEY ("certificadoId")
+          REFERENCES public.certificado_bancario (id) MATCH SIMPLE
+          ON UPDATE NO ACTION
+          ON DELETE NO ACTION
+  )
 
-# test coverage
-$ npm run test:cov
-```
+  ALTER TABLE IF EXISTS public.deposito
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Instalación
+Para instalar esta API, siga estos pasos:
+1. Clonar el repositorio.
+2. Ejecutar 'npm install' para instalar las dependencias.
+3. Configurar las credenciales de la base de datos en el archivo: realbank/src/app.module.ts.
 
-## Stay in touch
+ ## Ejemplo:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+        imports: [
+          TypeOrmModule.forRoot({
+            type: 'postgres',
+            host: 'localhost',
+            port: 5432,
+            username: 'postgres',
+            password: '12345',
+            database: 'realbank',
+            entities: [Cliente,CertificadoBancario,Deposito],
+            synchronize: true,
+          }),
+ 
+4. Ejecutar 'npm run start:dev' para iniciar el servidor de desarrollo.
 
-## License
+## Uso
+Puedes probar los endpoints de la API desde Swagger:
+- Acceder a Swagger: http://localhost:3000/api-docs.
 
-Nest is [MIT licensed](LICENSE).
+
