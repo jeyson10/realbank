@@ -11,28 +11,29 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
 
 2. Crear la tabla certificado_bancario: 
 
-## certificado_bancario: 
+    ```
+      CREATE TABLE IF NOT EXISTS public.certificado_bancario
+      (
+          id integer NOT NULL DEFAULT 'nextval('certificado_bancario_id_seq'::regclass)',
+          monto double precision NOT NULL,
+          meses integer NOT NULL,
+          interes double precision NOT NULL,
+          penalizacion double precision NOT NULL,
+          "fechaVencimiento" date NOT NULL,
+          estado boolean NOT NULL DEFAULT 'true',
+          "clienteId" integer NOT NULL,
+          "fechaInicio" date NOT NULL,
+          CONSTRAINT "PK_469a4537492b266f0b5a73bf90d" PRIMARY KEY (id),
+          CONSTRAINT "FK_4f6bac4a37235fc073e98ad469a" FOREIGN KEY ("clienteId")
+              REFERENCES public.cliente (id) MATCH SIMPLE
+              ON UPDATE NO ACTION
+              ON DELETE NO ACTION
+      )
 
-  CREATE TABLE IF NOT EXISTS public.certificado_bancario
-  (
-      id integer NOT NULL DEFAULT 'nextval('certificado_bancario_id_seq'::regclass)',
-      monto double precision NOT NULL,
-      meses integer NOT NULL,
-      interes double precision NOT NULL,
-      penalizacion double precision NOT NULL,
-      "fechaVencimiento" date NOT NULL,
-      estado boolean NOT NULL DEFAULT 'true',
-      "clienteId" integer NOT NULL,
-      "fechaInicio" date NOT NULL,
-      CONSTRAINT "PK_469a4537492b266f0b5a73bf90d" PRIMARY KEY (id),
-      CONSTRAINT "FK_4f6bac4a37235fc073e98ad469a" FOREIGN KEY ("clienteId")
-          REFERENCES public.cliente (id) MATCH SIMPLE
-          ON UPDATE NO ACTION
-          ON DELETE NO ACTION
-  )
 
-
-  ALTER TABLE IF EXISTS public.certificado_bancario
+      ALTER TABLE IF EXISTS public.certificado_bancario
+      
+    ```
 
 3. Crear la tabla cliente: 
 
