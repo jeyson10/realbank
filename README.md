@@ -10,8 +10,36 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
     CREATE DATABASE realbank;
 
     ```
+2. Crear la tabla cliente: 
 
-2. Crear la tabla certificado_bancario: 
+    ```
+
+      CREATE TABLE IF NOT EXISTS public.cliente
+      (
+          id integer NOT NULL DEFAULT 'nextval('cliente_id_seq'::regclass)',
+          nombre character varying COLLATE pg_catalog."default" NOT NULL,
+          apellido character varying COLLATE pg_catalog."default" NOT NULL,
+          correo character varying COLLATE pg_catalog."default" NOT NULL,
+          identificacion character varying COLLATE pg_catalog."default" NOT NULL,
+          telefono character varying COLLATE pg_catalog."default" NOT NULL,
+          estado boolean NOT NULL DEFAULT 'true',
+          CONSTRAINT "PK_18990e8df6cf7fe71b9dc0f5f39" PRIMARY KEY (id)
+      );
+    
+
+    ALTER TABLE IF EXISTS public.cliente;
+
+    CREATE SEQUENCE public.cliente_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+    ```
+
+3. Crear la tabla certificado_bancario: 
 
     ```
 
@@ -31,33 +59,22 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
               REFERENCES public.cliente (id) MATCH SIMPLE
               ON UPDATE NO ACTION
               ON DELETE NO ACTION
-      )
+      );
 
 
-      ALTER TABLE IF EXISTS public.certificado_bancario
+      ALTER TABLE IF EXISTS public.certificado_bancario;
+
+      CREATE SEQUENCE public.certificado_bancario_id_seq
+      AS integer
+      START WITH 1
+      INCREMENT BY 1
+      NO MINVALUE
+      NO MAXVALUE
+      CACHE 1;
       
     ```
 
-3. Crear la tabla cliente: 
 
-    ```
-
-      CREATE TABLE IF NOT EXISTS public.cliente
-      (
-          id integer NOT NULL DEFAULT 'nextval('cliente_id_seq'::regclass)',
-          nombre character varying COLLATE pg_catalog."default" NOT NULL,
-          apellido character varying COLLATE pg_catalog."default" NOT NULL,
-          correo character varying COLLATE pg_catalog."default" NOT NULL,
-          identificacion character varying COLLATE pg_catalog."default" NOT NULL,
-          telefono character varying COLLATE pg_catalog."default" NOT NULL,
-          estado boolean NOT NULL DEFAULT 'true',
-          CONSTRAINT "PK_18990e8df6cf7fe71b9dc0f5f39" PRIMARY KEY (id)
-      )
-    
-
-    ALTER TABLE IF EXISTS public.cliente
-
-    ```
 
 4. Crear la tabla deposito: 
     ```
@@ -73,17 +90,25 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
               REFERENCES public.certificado_bancario (id) MATCH SIMPLE
               ON UPDATE NO ACTION
               ON DELETE NO ACTION
-      )
+      );
 
-      ALTER TABLE IF EXISTS public.deposito
+      ALTER TABLE IF EXISTS public.deposito;
+
+      CREATE SEQUENCE public.deposito_id_seq
+      AS integer
+      START WITH 1
+      INCREMENT BY 1
+      NO MINVALUE
+      NO MAXVALUE
+      CACHE 1;
 
     ```
 ## Importar Datos de Prueba
 
     ```
-        INSERT INTO public.cliente VALUES (5, 'Jeyson', 'Diez', 'jeyson.diez@gmail.com', '40224884854', '8094135269', true);
-        INSERT INTO public.cliente VALUES (7, 'Pedro', 'Hernandez', 'pedro@gmail.com', '40224881112', '8094135220', true);
-        INSERT INTO public.cliente VALUES (6, 'Hansel', 'Vargas', 'vargasgmail.com', '40224884586', '8094555258', true);
+        INSERT INTO public.cliente VALUES ('Jeyson', 'Diez', 'jeyson.diez@gmail.com', '40224884854', '8094135269', true);
+        INSERT INTO public.cliente VALUES ( 'Pedro', 'Hernandez', 'pedro@gmail.com', '40224881112', '8094135220', true);
+        INSERT INTO public.cliente VALUES ( 'Hansel', 'Vargas', 'vargasgmail.com', '40224884586', '8094555258', true);
 
         INSERT INTO public.certificado_bancario VALUES (11, 50000, 9, 5, 10, '2024-01-03', true, 7, '2023-04-03');
         INSERT INTO public.certificado_bancario VALUES (13, 100000, 10, 6, 10, '2024-02-03', true, 6, '2023-04-10');

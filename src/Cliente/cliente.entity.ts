@@ -1,9 +1,9 @@
 import { CertificadoBancario } from 'src/Certificado/certificado.entity';
-import { Entity, Column, PrimaryGeneratedColumn,OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn,OneToMany} from 'typeorm';
 
 @Entity()
 export class Cliente {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('increment', { type: 'integer' })
   id: number;
 
   @Column()
