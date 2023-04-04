@@ -12,7 +12,7 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
     ```
 2. Entrar al Area donde se crean los Queries Dentro de la BD (realbank): 
 
-3. Ejecutar todo el Codigo que se encuentra dentro del archivo "realbank3.sql" en la raiz del proyecto  
+3. Ejecutar todo el Codigo dentro del archivo "realbank3.sql" que se encuentra en la raiz del proyecto  
 
 ## Instalación
 Para instalar esta API, siga estos pasos:
