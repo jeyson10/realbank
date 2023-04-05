@@ -8,9 +8,10 @@ Esta es una API creada con NestJS para la Gestion de Certificados bancarios de l
 1. Crear Base de Datos: 
     ```
     CREATE DATABASE realbank;
-
+   
     ```
-2. Entrar al Area donde se crean los Queries Dentro de la BD (realbank): 
+    
+2. Entrar al Query Tools de la base de datos creada (realbank): 
 
 3. Ejecutar todo el Codigo dentro del archivo "realbank3.sql" que se encuentra en la raiz del proyecto  
 
